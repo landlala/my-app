@@ -6,9 +6,13 @@ import {motion, AnimatePresence, useScroll} from "framer-motion";
 import {useState} from "react";
 import {useWindowDimensions} from "../useWindowDimensions";
 import { useNavigate, useMatch, PathMatch } from "react-router-dom";
+import TopRated from "./Sliders/Movie/TopRated";
+import Upcoming from "./Sliders/Movie/Upcoming";
 
 const Wrapper = styled.div`
   background: black;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Loader = styled.div`
@@ -41,6 +45,7 @@ const Overview = styled.p`
 const Slider = styled(motion.div)`
   position: relative;
   top: -100px;
+  margin-bottom: 250px;
 `;
 
 const Row = styled(motion.div)`
@@ -199,12 +204,14 @@ function Home() {
           <Loader>Loading...</Loader>
         ) : (
           <>
-            <Banner onClick = {increaseIndex} bgPhoto = {makeImagePath(data?.results[0].backdrop_path || "")}>
+            <Banner bgPhoto = {makeImagePath(data?.results[0].backdrop_path || "")}>
               <Title>{data?.results[0].title}</Title>
               <Overview>{data?.results[0].overview}</Overview>
             </Banner>
             <Slider>
               <AnimatePresence initial = {false} onExitComplete = {toggleLeaving}>
+                <button onClick = {increaseIndex}>next</button>
+                <h1>NOW PLAYING</h1>
                 <Row
                   initial = {{x: width + 5}}
                   animate = {{x: 0}}
@@ -231,6 +238,8 @@ function Home() {
                 </Row>
               </AnimatePresence>
             </Slider>
+            <Upcoming />
+            <TopRated />
             <AnimatePresence>
               {bigMovieMatch ?
                 <>
